@@ -1,0 +1,71 @@
+from typing import FrozenSet
+import requests
+import json 
+from tkinter import*
+from requests.models import Response
+from tkinter.messagebox import showinfo , showerror
+
+
+def send_msg(message , number):
+    url = 'https://www.fast2sms.com/dev/bulkV2'
+    params ={
+        'authorization': 'give your authentication key here',
+        'sender_id':'FSTSMS',
+        'message': message,
+        'language': 'english',
+        'route': 'p',
+        'numbers': number
+    }
+
+    response = requests.get(url ,params=params)
+    dic = response.json()
+    print(dic)
+    return dic.get('return')
+
+
+"""send_msg("Hello you won three hundered ruppees","8273317743")"""
+
+
+root=Tk()
+root.geometry("400x500")
+root.title("This is Massege sender")
+
+
+#l1=Label(root,text="Mo. Number",fg="red",font=('Helvatical bold',14)).pack(side="top")
+
+def action():
+    num=enter_number.get()
+    msg=enter_msg.get("1.0",END)
+    K = send_msg(msg,num)
+    if K:
+        showinfo("Send Sucess","Successfully sent")
+    else:
+        showerror("Error","Somthing went wrong")
+    
+
+
+font = ("Helvetica",20,"bold")
+enter_number=Entry(root,font=font)
+enter_number.pack(fill=X,pady=20)
+
+
+
+# l2=Label(root,text="Text Message",fg="red",font=('Helvatical bold',14)).pack()
+
+
+
+enter_msg=Text(root)
+enter_msg.pack(fill=X)
+
+
+btn=Button(root,text="Send SMS",command=action)
+btn.pack()
+
+def quit():
+    root.destroy()
+btn1 = Button(root,text="Exit",command=quit).pack()
+root.mainloop()
+
+
+
+
